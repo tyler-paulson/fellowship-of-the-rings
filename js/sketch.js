@@ -46,14 +46,20 @@
         headers: {
             'Authorization': 'Bearer s9yLjQPfLF2pL2ywmOGW'
         }
-    })
-    .then(response => response.json())
-    .then(data => {
+    }).then(response => response.json()).then(data => {
+
+        console.log(data);
+
+        // Loop through all the quotes
         
         data.docs.forEach(doc => {
+
+            // Calc position
         
             var x = random(width * -1, width * 2);
             var y = random(height * -1, height * 2);
+
+            // Does it intersect?
 
             var intersection = false;
             for (var i = 0; i < circles.length; i++) {
@@ -63,6 +69,8 @@
                     break;
                 }
             }
+
+            // Inject into page
 
             if (!intersection) {
 
@@ -80,6 +88,8 @@
                 `);
 
                 circle.position(x,y);
+
+                // Save to array
                 circles.push(circle);
 
             }
