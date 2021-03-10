@@ -37,63 +37,66 @@
  const maxDistance = 200;
  
  function setup() {
-   createCanvas(windowWidth, windowHeight);
-   noFill();
-   ellipseMode(RADIUS);
-   rectMode(RADIUS);
+
+   createCanvas(windowWidth * 3, windowHeight * 3);
 
    var ii = 0;
 
-    fetch('https://the-one-api.dev/v2/quote?limit=1000', {
+    fetch('https://the-one-api.dev/v2/quote?limit=800', {
         headers: {
             'Authorization': 'Bearer s9yLjQPfLF2pL2ywmOGW'
         }
     })
     .then(response => response.json())
     .then(data => {
-    console.log(data.docs.length);
-    data.docs.forEach(doc => {
         
-        var x = random(0, width * 3);
-        var y = random(0, height * 3);
+        data.docs.forEach(doc => {
+        
+            var x = random(width * -1, width * 2);
+            var y = random(height * -1, height * 2);
 
-        var intersection = false;
-        for (var i = 0; i < circles.length; i++) {
-            var d = dist(x, y, circles[i].x, circles[i].y);
-            intersection = d < maxDistance;
-            if (intersection) {
-                break;
+            var intersection = false;
+            for (var i = 0; i < circles.length; i++) {
+                var d = dist(x, y, circles[i].x, circles[i].y);
+                intersection = d < maxDistance;
+                if (intersection) {
+                    break;
+                }
             }
-        }
 
-        if (!intersection) {
+            if (!intersection) {
 
-            var randomColor = Math.floor(Math.random()*16777215).toString(16);
+                let randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-            var circle = createDiv(`
-                <div data-w-id="f58df55e-3197-5eed-975f-dfb164ea47d3" class="quote" style="background-color: #${randomColor} ;">
-                    <div class="quote-preview">
-                    <p class="quote-preview-text">${doc.dialog.substring(0, 14)}</p>
+                var circle = createDiv(`
+                    <div data-w-id="f58df55e-3197-5eed-975f-dfb164ea47d3" class="quote" style="background-color: #${randomColor} ;">
+                        <div class="quote-preview">
+                        <p class="quote-preview-text">${doc.dialog.substring(0, 14)}</p>
+                        </div>
+                        <div class="quote-content">
+                        <p class="quote-content-text">${doc.dialog}<br><br><strong>- ${doc.character}</strong></p>
+                        </div>
                     </div>
-                    <div class="quote-content">
-                    <p class="quote-content-text">${doc.dialog}<br><br><strong>- ${doc.character}</strong></p>
-                    </div>
-                </div>
-            `);
-            circle.position(x,y);
-            circles.push(circle);
+                `);
 
-        }
+                circle.position(x,y);
+                circles.push(circle);
+
+            }
 
         ii++;
 
     });
 
+    // Now load up webflow.js
     var script = document.createElement('script');
     script.src = 'js/webflow.js';
     script.type = 'text/javascript';
-
     document.getElementsByTagName('body')[0].appendChild(script);
+
+    // And scroll!
+
+    $(window).scrollTo({left:windowWidth, top: windowHeight})
     
   });
 
@@ -101,7 +104,7 @@
  
  function draw() {
 
-    
+
 
  }
  
